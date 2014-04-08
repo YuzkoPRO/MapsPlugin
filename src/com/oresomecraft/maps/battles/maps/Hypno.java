@@ -1,6 +1,7 @@
 package com.oresomecraft.maps.battles.maps;
 
 import com.oresomecraft.maps.MapConfig;
+import org.bukkit.event.entity.EntityDamageEvent;
 import com.oresomecraft.maps.battles.BattleMap;
 import com.oresomecraft.maps.battles.IBattleMap;
 import com.oresomecraft.OresomeBattles.api.*;
@@ -89,6 +90,7 @@ public class Hypno extends BattleMap implements IBattleMap, Listener {
         ItemStack IRON_PICK = new ItemStack(Material.IRON_PICKAXE, 1);
         ItemStack EMERALD = new ItemStack(Material.EMERALD, 1);
         ItemStack EGG_HYPNO = new ItemStack(Material.EGG, 1);
+        ItemStack DIAMOND = new ItemStack(Material.DIAMOND, 1);
 
         ItemMeta egg_hypno = EGG_HYPNO.getItemMeta();
         egg_hypno.setDisplayName(ChatColor.BLUE + "Flash bang grenade");
@@ -116,6 +118,7 @@ public class Hypno extends BattleMap implements IBattleMap, Listener {
         i.setItem(4, STEAK);
         i.setItem(5, HEALTH_POTION);
         i.setItem(9, ARROWS);
+        i.setItem(10, DIAMOND); //TO REMOVE FALL DAMAGE 
 
     }
 
@@ -242,4 +245,22 @@ public class Hypno extends BattleMap implements IBattleMap, Listener {
             }
         }
     }
+    
+   @EventHandler
+	public void onFall(EntityDamageEvent e)
+	{
+		if(e.getEntity() instanceof Player)
+		{
+			Player player = (Player) e.getEntity();
+			
+			if(e.getCause() == DamageCause.FALL)
+			{
+			    if(player.getInventory().getItemInHand().getType() == Material.DIAMOND)
+			    {
+				e.setCancelled(true);
+			    }
+			}
+		}
+	}
+    
 }
